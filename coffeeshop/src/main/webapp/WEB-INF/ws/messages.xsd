@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:types="http://coffeeshop.com/schemas/types"
+	targetNamespace="http://coffeeshop.com/schemas/messages"
+	elementFormDefault="qualified">
+
+	<import namespace="http://coffeeshop.com/schemas/types"
+		schemaLocation="types.xsd" />
+
+	<element name="ProductSearchRequest">
+		<complexType>
+			<all>
+				<element name="ProductName" type="string" />
+			</all>
+		</complexType>
+	</element>
+	<element name="ProductSearchResponse">
+		<complexType>
+			<sequence>
+				<element name="Product" type="types:Product" minOccurs="1" maxOccurs="unbounded" />
+			</sequence>
+		</complexType>
+	</element>
+</schema>

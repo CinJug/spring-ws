@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:sch0="http://coffeeshop.com/schemas/messages" xmlns:sch1="http://coffeeshop.com/schemas/types" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://coffeeshop.com/definitions" targetNamespace="http://coffeeshop.com/definitions">
+  <wsdl:types>
+    <schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://coffeeshop.com/schemas/messages" xmlns:types="http://coffeeshop.com/schemas/types" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://coffeeshop.com/schemas/messages"><import namespace="http://coffeeshop.com/schemas/types"/><element name="ProductSearchRequest"><complexType><all><element name="ProductName" type="string"/></all></complexType></element><element name="ProductSearchResponse"><complexType><sequence><element maxOccurs="unbounded" name="Product" type="types:Product"/></sequence></complexType></element></schema>
+    <schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:types="http://coffeeshop.com/schemas/types" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://coffeeshop.com/schemas/types"><complexType name="Product"><all><element name="id" type="int"/><element name="name" type="string"/><element name="price" type="types:Money"/></all></complexType><simpleType name="Money"><restriction base="decimal"><fractionDigits value="2"/></restriction></simpleType></schema>
+  </wsdl:types>
+  <wsdl:message name="ProductSearchResponse">
+    <wsdl:part element="sch0:ProductSearchResponse" name="ProductSearchResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="ProductSearchRequest">
+    <wsdl:part element="sch0:ProductSearchRequest" name="ProductSearchRequest">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="CoffeeShop">
+    <wsdl:operation name="ProductSearch">
+      <wsdl:input message="tns:ProductSearchRequest" name="ProductSearchRequest">
+    </wsdl:input>
+      <wsdl:output message="tns:ProductSearchResponse" name="ProductSearchResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="CoffeeShopSoap11" type="tns:CoffeeShop">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="ProductSearch">
+      <soap:operation soapAction=""/>
+      <wsdl:input name="ProductSearchRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="ProductSearchResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="CoffeeShopService">
+    <wsdl:port binding="tns:CoffeeShopSoap11" name="CoffeeShopSoap11">
+      <soap:address location="http://localhost:8080/coffeeshop"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

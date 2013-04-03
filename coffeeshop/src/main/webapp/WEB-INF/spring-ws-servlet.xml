@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sws="http://www.springframework.org/schema/web-services"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+		http://www.springframework.org/schema/web-services http://www.springframework.org/schema/web-services/web-services-2.0.xsd">
+
+	<context:component-scan base-package="com.illuminationworksllc.samples.coffeeshop" />
+
+	<!-- There are two endpoint mappings that can direct requests to methods: 
+		PayloadRootAnnotationMethodEndpointMapping SoapActionAnnotationMethodEndpointMapping 
+		both of which are enabled by using annotation-driven. -->
+	<sws:annotation-driven />
+
+	<sws:static-wsdl id="coffeeshop" location="/WEB-INF/ws/coffeeshop.wsdl"/>
+
+	<!-- http://localhost:8080/coffeeshop/coffeeshop.wsdl -->
+	<!-- bean id="schemaCollection"
+		class="org.springframework.xml.xsd.commons.CommonsXsdSchemaCollection">
+		<description>
+			This bean wrap the messages.xsd (which imports
+			types.xsd), and inlines
+			them as a one.
+		</description>
+		<property name="xsds" value="/WEB-INF/ws/messages.xsd" />
+		<property name="inline" value="true" />
+	</bean>
+	<bean id="coffeeshop"
+		class="org.springframework.ws.wsdl.wsdl11.DefaultWsdl11Definition">
+		<description>
+			Builds a WSDL from the messages.xsd.
+		</description>
+		<property name="schemaCollection" ref="schemaCollection" />
+		<property name="portTypeName" value="CoffeeShop" />
+		<property name="targetNamespace" value="http://coffeeshop.com/definitions" />
+		<property name="locationUri" value="http://localhost:8080/coffeeshop" />
+	</bean-->
+
+	<!-- Security -->
+	<sws:interceptors>
+		<ref bean="wsSecurityInterceptor"/>
+	</sws:interceptors>
+	<bean id="wsSecurityInterceptor"
+		class="org.springframework.ws.soap.security.xwss.XwsSecurityInterceptor">
+		<property name="policyConfiguration" value="classpath:securityPolicy.xml" />
+		<property name="callbackHandlers">
+			<list>
+				<ref bean="passwordValidationHandler" />
+			</list>
+		</property>
+	</bean>
+	<bean id="passwordValidationHandler"
+		class="org.springframework.ws.soap.security.xwss.callback.SimplePasswordValidationCallbackHandler">
+		<property name="users">
+			<props>
+				<prop key="admin">password</prop>
+			</props>
+		</property>
+	</bean>
+</beans>
